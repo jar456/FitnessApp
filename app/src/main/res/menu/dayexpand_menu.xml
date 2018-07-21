@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:title = "@string/dayExpand_menu_remove"
+        android:id="@+id/dayExpandMenu_remove">
+    </item>
+    <item android:title = "@string/dayExpand_menu_setTitle"
+        android:id="@+id/dayExpandMenu_setTitle">
+    </item>
+
+</menu>

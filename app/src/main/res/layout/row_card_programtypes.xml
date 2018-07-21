@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/cardView_programSelect"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp">
+
+        <RelativeLayout
+            android:id="@+id/parent_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="9dp">
+
+
+            <ImageView
+                android:id="@+id/select_thumbnail"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:background="@color/colorPrimary"
+                android:layout_centerVertical="true"/>
+
+            <TextView
+                android:id="@+id/select_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:layout_marginLeft="8dp"
+                android:layout_toRightOf="@id/select_thumbnail"
+                android:textSize="22sp"/>
+
+            <TextView
+                android:id="@+id/select_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/select_name"
+                android:layout_toRightOf="@id/select_thumbnail"
+                android:layout_marginLeft="8dp"
+                android:text=""
+                android:textSize="12dp"/>
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+</LinearLayout>

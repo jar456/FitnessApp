@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:title="@string/programManagerMenu_Edit"
+        android:id="@+id/programManagerMenu_EditProgram">
+    </item>
+    <item
+        android:title="@string/programManagerMenu_Delete"
+        android:id="@+id/programManagerMenu_DeleteProgram">
+    </item>
+
+</menu>

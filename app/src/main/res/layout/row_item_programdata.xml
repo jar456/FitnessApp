@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp">
+
+    <ImageView
+        android:id="@+id/img_dataExercise"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        app:srcCompat="@mipmap/ic_launcher" />
+
+    <TextView
+        android:id="@+id/txt_exerciseHeader"
+        android:layout_width="290dp"
+        android:layout_height="20dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_toEndOf="@id/img_dataExercise"
+        android:layout_toRightOf="@id/img_dataExercise"
+        android:text="Barbell Bench Press"
+        android:textSize="18sp" />
+    <TextView
+        android:id="@+id/txt_exerciseExtra"
+        android:layout_width="290dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_below="@id/txt_exerciseHeader"
+        android:layout_toRightOf="@id/img_dataExercise"
+        android:layout_toEndOf="@id/img_dataExercise"
+        android:text="3 sets of 12"
+        android:textSize="14sp"/>
+
+    <ImageButton
+        android:id="@+id/btn_removeExercise"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/colorTransparent"
+        android:padding="8dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        app:srcCompat="@drawable/ic_cancel" />
+
+
+</RelativeLayout>

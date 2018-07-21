@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary">
+
+        <TextView
+            android:id="@+id/txt_dayBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:text="Week"
+            android:textColor="@color/colorWhite"
+            android:textSize="16sp" />
+
+        <ImageButton
+            android:id="@+id/btn_expandDay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@id/txt_dayBar"
+            android:layout_toRightOf="@id/txt_dayBar"
+            android:background="@color/colorTransparent"
+            android:padding="2dp"
+            app:srcCompat="@drawable/ic_expand_more" />
+
+        <Button
+            android:id="@+id/btn_addExercise"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:background="@color/colorPrimaryLight"
+            android:drawableEnd="@drawable/ic_add_circle"
+            android:drawablePadding="4dp"
+            android:drawableRight="@drawable/ic_add_circle"
+            android:padding="8dp"
+            android:text="@string/programEditor_addExercise"
+            android:textColor="@color/colorWhite"
+            android:textSize="12sp">
+
+        </Button>
+    </RelativeLayout>
+</LinearLayout>
