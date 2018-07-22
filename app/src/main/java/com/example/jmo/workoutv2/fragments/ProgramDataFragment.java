@@ -133,7 +133,7 @@ public class ProgramDataFragment extends Fragment implements AddExerciseDialogFr
                         programData.getWeek(focusedWeek).getDay(groupPosition).setTitle("Setted");
                         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                         builder.setTitle("Enter title")
-                                .setView(R.layout.popup_enterdaytitle)
+                                .setView(R.layout.popup_entertitle)
                                 .setNegativeButton(R.string.choice_no, new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {

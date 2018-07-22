@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -25,7 +26,7 @@ import com.example.jmo.workoutv2.fragments.ProgramDataFragment;
 import com.example.jmo.workoutv2.template.programs.PresetPrograms;
 import com.google.gson.Gson;
 
-public class ProgramsCreateActivity extends AppCompatActivity {
+public class ProgramsCreateActivity extends AppCompatActivity implements InputProgramTitleDialogFragment.InputProgramTitleDialogListener{
     DatabaseProgramHelper mDatabaseHelper;
     private String programName; // LOAD from database
     private String programTag;
@@ -91,7 +92,6 @@ public class ProgramsCreateActivity extends AppCompatActivity {
                     InputProgramTitleDialogFragment dialog = new InputProgramTitleDialogFragment();
                     dialog.show(getSupportFragmentManager(), "InputProgramTitleDialogFragment");
                 }
-                finish();
                 return true;
 
             case R.id.programsMenu_test:
@@ -247,5 +247,14 @@ public class ProgramsCreateActivity extends AppCompatActivity {
             Snackbar.make(parentLayout, "Error saving program", Snackbar.LENGTH_LONG).show();
         }
     }
+
+    @Override
+    public void onDialogPositiveClick(DialogFragment dialog, String newName) {
+        programData.setProgramName(newName);
+        dialog.dismiss();
+        AddData();
+        finish();
+    }
+
 
 }
