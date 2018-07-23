@@ -39,27 +39,27 @@ public class ManageProgramsFragment extends Fragment implements ManageProgramsLi
 
         mDatabaseHelper = new DatabaseProgramHelper(getContext());
         recyclerView = (RecyclerView) v.findViewById(R.id.recyclerView_managePrograms);
-        programDataList = new ArrayList<>();
-        adapter = new ManageProgramsListAdapter(getActivity(), programDataList, this);
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(adapter);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL);
         dividerItemDecoration.setDrawable(ContextCompat.getDrawable(getContext(), R.drawable.row_divider));
         recyclerView.addItemDecoration(dividerItemDecoration);
 
-        populateListView();
-
-
         return v;
     }
+
 
     @Override
     public void onResume() {
         super.onResume();
         getActivity().setTitle(R.string.title_ProgramManager);
+
+        programDataList = new ArrayList<>();
+        adapter = new ManageProgramsListAdapter(getActivity(), programDataList, this);
+        populateListView();
+        recyclerView.setAdapter(adapter);
     }
 
     private void populateListView() {
@@ -85,20 +85,23 @@ public class ManageProgramsFragment extends Fragment implements ManageProgramsLi
                     Gson gson = new Gson();
                     String program_json = gson.toJson(programDataList.get(position));
 
+                    Cursor data = mDatabaseHelper.getItemID(program_json);
+                    int itemID = -1;
+                    while(data.moveToNext()) {
+                        itemID = data.getInt(0);
+                    }
+
                     switch (menuItem.getItemId()) {
                         case R.id.programManagerMenu_EditProgram:
                             Snackbar.make(view, "EDIT  ", Snackbar.LENGTH_LONG).show();
                             Intent intent = new Intent(getActivity(), ProgramsCreateActivity.class);
                             intent.putExtra("program_json", program_json);
+                            intent.putExtra("selected_id", itemID);
                             getActivity().startActivity(intent);
                             return true;
                         case R.id.programManagerMenu_DeleteProgram:
                             Snackbar.make(view, "DELETE", Snackbar.LENGTH_LONG).show();
-                            Cursor data = mDatabaseHelper.getItemID(program_json);
-                            int itemID = -1;
-                            while(data.moveToNext()) {
-                                itemID = data.getInt(0);
-                            }
+
                             if (itemID != -1) {
                                 mDatabaseHelper.deleteName(itemID, program_json);
                                 programDataList.remove(position);
@@ -114,13 +117,4 @@ public class ManageProgramsFragment extends Fragment implements ManageProgramsLi
             popupMenu.show();
         }
     }
-
-    public String jsonToString(ProgramData programData) {
-        String asd = "asd";
-        return asd;
-
-    }
-
-
-
 }

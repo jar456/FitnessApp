@@ -71,6 +71,8 @@ public class DatabaseProgramHelper extends SQLiteOpenHelper {
         String query = "UPDATE " + TABLE_NAME + " SET " + COLUMN_NAME_SUBTITLE +
                 " = '" + newSubtitle + "' WHERE " + COLUMN_NAME_TITLE + " = '" + id + "'" +
                 " AND " + COLUMN_NAME_SUBTITLE + " = '" + oldSubtitle + "'";
+        Log.d(TAG, "updateSubtitle: query: " + query);
+        Log.d(TAG, "updateSubtitle: Setting subtitle to " + newSubtitle);
         db.execSQL(query);
     }
 

@@ -64,7 +64,7 @@ public class ManageProgramsListAdapter extends RecyclerView.Adapter<ManageProgra
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
         final ProgramData programData = programDataList.get(position);
         holder.title.setText(programData.getProgramName());
-        holder.subtitle.setText(Integer.toString(programData.getProgramID()));
+        holder.subtitle.setText(Integer.toString(programData.getProgramID()) + " " + programData.getProgramTag());
 
         holder.parentLayout.setOnClickListener(new View.OnClickListener() {
             @Override

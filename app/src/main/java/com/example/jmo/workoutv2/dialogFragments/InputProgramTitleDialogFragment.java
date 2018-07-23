@@ -18,7 +18,7 @@ public class InputProgramTitleDialogFragment extends DialogFragment {
     InputProgramTitleDialogListener mListener;
 
     public interface InputProgramTitleDialogListener {
-        public void onDialogPositiveClick(DialogFragment dialog, String newName);
+        public void onInputProgramTitleDialogPositiveClick(DialogFragment dialog, String newName);
 
     }
 
@@ -48,7 +48,7 @@ public class InputProgramTitleDialogFragment extends DialogFragment {
                     public void onClick(DialogInterface dialog, int which) {
                         EditText editTextTitle = v.findViewById(R.id.editDayTitle_popup);
                         String name = editTextTitle.getText().toString();
-                        mListener.onDialogPositiveClick(InputProgramTitleDialogFragment.this, name);
+                        mListener.onInputProgramTitleDialogPositiveClick(InputProgramTitleDialogFragment.this, name);
 
                     }
                 })

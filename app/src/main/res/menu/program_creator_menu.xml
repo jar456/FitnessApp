@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:title="@string/programCreatorMenu_setTitle"
+        android:id="@+id/programCreatorMenu_setTitle">
+    </item>
+    <item
+        android:title="@string/programCreatorMenu_help"
+        android:id="@+id/programCreatorMenu_help">
+    </item>
+
+    <item
+        android:title="@string/programCreatorMenu_exit"
+        android:id="@+id/programCreatorMenu_exit">
+    </item>
+
+</menu>

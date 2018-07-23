@@ -117,7 +117,7 @@ public class ProgramDataFragment extends Fragment implements AddExerciseDialogFr
             public boolean onMenuItemClick(MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
                     // Day Bar Expand Items
-                    case R.id.dayExpandMenu_remove:
+                    case R.id.dayExpandMenu_removeAll:
                         Snackbar.make(v, "Successfully removed day contents.", Snackbar.LENGTH_LONG).show();
 
                         programData.getWeek(focusedWeek).getDay(groupPosition).getExerciseList().clear();

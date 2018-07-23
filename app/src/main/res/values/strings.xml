@@ -18,6 +18,7 @@
     <string name="programs_recentNull">No Recent Programs</string>
     <string name="programs_recentCreate">Click to Create a Program</string>
 
+    <!-- Program Creator Selection -->
     <string name="menu_programSelector">Select a Program</string>
     <string name="templateProgram_bodybuilding">Bodybuilding</string>
     <string name="templateProgram_powerlifting">Powerlifting</string>
@@ -30,15 +31,20 @@
     <string name="description_powerlifting">Powerlifting is about gaining strength in the big three compound lifts; Squat, Bench Press and Deadlift. This routine is great if you\'re looking to improve
     overall strength and numbers in the three lifts.</string>
 
+    <!-- Program Creator Menu -->
     <string name="week_select">Week </string>
-    <string name="programs_test">Test</string>
-    <string name="programs_test2">Test 2</string>
+    <string name="programCreatorMenu_setTitle">Change Title</string>
+    <string name="programCreatorMenu_help">Help</string>
+    <string name="programCreatorMenu_exit">Exit</string>
 
     <string name="programEditor_addExercise">New Exercise</string>
 
     <!-- Simple String Preset -->
     <string name="choice_yes">Yes</string>
     <string name="choice_no">No</string>
+    <string name="choice_cancel">Cancel</string>
+    <string name="exitWithoutSave">Exit Without Saving</string>
+    <string name="exitWithSave">Save &amp; Exit</string>
 
     <!-- Manage Program On Click Item -->
     <string name="programManagerMenu_Edit">Edit Program</string>
@@ -48,9 +54,12 @@
     <string name="removeExercise_popup_title">Remove Exercise?</string>
 
     <!-- Day Bar Expand Button Click Menu -->
-    <string name="dayExpand_menu_remove">Remove Day</string>
-    <string name="dayExpand_menu_setTitle">Set Title</string>
+    <string name="dayExpand_menu_setTitle">Change Title</string>
+    <string name="dayExpand_menu_removeAll">Remove All Exercises</string>
 
     <!-- Exercise Data Long Click Menu -->
     <string name="exerciseDataLong_menu_remove">Remove Exercise</string>
+
+    <!-- Popup Messages -->
+    <string name="popupMessage_exit">Would you like to exit?</string>
 </resources>
