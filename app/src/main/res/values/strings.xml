@@ -60,6 +60,10 @@
     <!-- Exercise Data Long Click Menu -->
     <string name="exerciseDataLong_menu_remove">Remove Exercise</string>
 
+    <!--Week Selection Long Click Menu -->
+    <string name="weekSelectLong_menu_edit">Edit Name</string>
+    <string name="weekSelectLong_menu_remove">Remove Week</string>
+
     <!-- Popup Messages -->
     <string name="popupMessage_exit">Would you like to exit?</string>
 </resources>

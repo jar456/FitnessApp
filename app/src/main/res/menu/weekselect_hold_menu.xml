@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:title="@string/weekSelectLong_menu_edit"
+        android:id="@+id/weekSelectHoldMenu_Edit">
+    </item>
+    <item
+        android:title="@string/weekSelectLong_menu_remove"
+        android:id="@+id/weekSelectHoldMenu_Remove">
+    </item>
+
+</menu>

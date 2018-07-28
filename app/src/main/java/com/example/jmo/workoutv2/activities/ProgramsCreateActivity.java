@@ -2,24 +2,23 @@ package com.example.jmo.workoutv2.activities;
 
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
+import android.widget.AdapterView;
 
 import com.example.jmo.workoutv2.R;
+import com.example.jmo.workoutv2.adapters.WeekSelectAdapter;
 import com.example.jmo.workoutv2.data.DatabaseProgramHelper;
 import com.example.jmo.workoutv2.data.ProgramData;
 import com.example.jmo.workoutv2.dialogFragments.InputProgramTitleDialogFragment;
@@ -29,15 +28,13 @@ import com.example.jmo.workoutv2.template.programs.PresetPrograms;
 import com.google.gson.Gson;
 
 public class ProgramsCreateActivity extends AppCompatActivity implements InputProgramTitleDialogFragment.InputProgramTitleDialogListener,
-        PromptExitDialogFragment.PromptExitDialogListener {
+        PromptExitDialogFragment.PromptExitDialogListener, WeekSelectAdapter.WeekSelectListener {
     DatabaseProgramHelper mDatabaseHelper;
 
     private String programName; // Primarily used if loaded from a new program template
     private String programTag; // Primarily used if loaded from a new program template
 
-    private int focusedWeek; // Track the week user is focused on
-    private Button prevWeekButton;
-    private int indexButtons = -1;
+    private int focusedWeek = 0; // Track the week user is focused on
 
     private ProgramData programData;
 
@@ -48,7 +45,9 @@ public class ProgramsCreateActivity extends AppCompatActivity implements InputPr
     private boolean isExitable = false;
     private final static String SHARED_PREF_KEY = "num_programs"; // Used for unique program modifier
 
-    private LinearLayout layout_WeekSelection;
+    private RecyclerView recyclerView;
+    private WeekSelectAdapter adapter;
+    View parentLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +63,8 @@ public class ProgramsCreateActivity extends AppCompatActivity implements InputPr
         // Check database for imformation... if not create DEFAULT
         getIncomingIntent();
 
+        parentLayout = findViewById(android.R.id.content);
+
         // If 1st time creation
         if (programTag.equals("DEFAULT")) {
             programData = new ProgramData("", programTag);
@@ -74,15 +75,21 @@ public class ProgramsCreateActivity extends AppCompatActivity implements InputPr
             setTitle(programName);
         }
 
+        CreateRecyclerView();
+
         // Pass the data to fragment
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         Fragment programDataFragment = ProgramDataFragment.newInstance(programData, focusedWeek, isEditable);
         ft.add(R.id.fragment_container_program_edit, programDataFragment).commit();
 
-        layout_WeekSelection = (LinearLayout) findViewById(R.id.layout_weekselect);
+    }
 
-        createWeekButtons();
-        createAddWeekButton();
+    private void CreateRecyclerView() {
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        recyclerView = findViewById(R.id.recyclerView_weekButton);
+        recyclerView.setLayoutManager(layoutManager);
+        adapter = new WeekSelectAdapter(programData,this, this, focusedWeek);
+        recyclerView.setAdapter(adapter);
     }
 
     @Override
@@ -112,7 +119,6 @@ public class ProgramsCreateActivity extends AppCompatActivity implements InputPr
                     UpdateData();
                     Snackbar.make(findViewById(R.id.CoordinatorLayout_program_create), "Successfully Saved", Snackbar.LENGTH_LONG).show();
                 }
-
                 return true;
 
             case R.id.programCreatorMenu_setTitle:
@@ -148,109 +154,6 @@ public class ProgramsCreateActivity extends AppCompatActivity implements InputPr
         }
     }
 
-    public void createWeekButtons() {
-        for (int i = 0; i < programData.getWeekSize(); i++) {
-            final Button weekButton = new Button(this);
-            if (i == focusedWeek) {
-                prevWeekButton = weekButton;
-            }
-            indexButtons++;
-            onCreateWeekSelect(weekButton, indexButtons);
-
-            weekButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (prevWeekButton.getId() == weekButton.getId()) {
-                        return;
-                    }
-                    Snackbar.make(view, "INDEX: " + weekButton.getId(), Snackbar.LENGTH_LONG).show();
-                    prevWeekButton.setBackground(getResources().getDrawable(R.drawable.line_unselected));
-                    weekButton.setBackground(getResources().getDrawable(R.drawable.line_selected));
-                    prevWeekButton = weekButton;
-                    focusedWeek = weekButton.getId();
-
-                    FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                    Fragment programDataFragment = ProgramDataFragment.newInstance(programData, focusedWeek, isEditable);
-                    ft.replace(R.id.fragment_container_program_edit, programDataFragment).commit();
-
-                }
-            });
-            layout_WeekSelection.addView(weekButton);
-        }
-    }
-
-    public void onCreateWeekSelect(Button weekButton, int i) {
-        if (i == focusedWeek) {
-            weekButton.setBackground(getResources().getDrawable(R.drawable.line_selected));
-        } else {
-            weekButton.setBackground(getResources().getDrawable(R.drawable.line_unselected));
-        }
-        weekButton.setText(getResources().getString(R.string.week_select) + " " + (i + 1));
-        weekButton.setId(i);
-        weekButton.setTextColor(getResources().getColor(R.color.colorWhite));
-    }
-
-    public void createAddWeekButton() {
-        final LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
-        final ImageButton addWeekButton = new ImageButton(this);
-        // final because will be used in override
-
-        onCreateAddWeekButton(addWeekButton, params);
-        layout_WeekSelection.addView((addWeekButton));
-
-        addWeekButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                layout_WeekSelection.removeView(addWeekButton);
-
-                final Button weekButton = new Button(getApplicationContext());
-                indexButtons++;
-                onCreateWeekSelect(weekButton, indexButtons);
-                layout_WeekSelection.addView(weekButton);
-
-                prevWeekButton.setBackground(getResources().getDrawable(R.drawable.line_unselected));
-                weekButton.setBackground(getResources().getDrawable(R.drawable.line_selected));
-                prevWeekButton = weekButton;
-                focusedWeek = weekButton.getId();
-
-                onCreateAddWeekButton(addWeekButton, params);
-                layout_WeekSelection.addView(addWeekButton);
-
-                programData.addWeek();
-
-                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                Fragment programDataFragment = ProgramDataFragment.newInstance(programData, focusedWeek, isEditable);
-                ft.replace(R.id.fragment_container_program_edit, programDataFragment).commit();
-
-                weekButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if (prevWeekButton.getId() == weekButton.getId()) {
-                            return;
-                        }
-                        Snackbar.make(view, "INDEX: " + weekButton.getId(), Snackbar.LENGTH_LONG).show();
-                        prevWeekButton.setBackground(getResources().getDrawable(R.drawable.line_unselected));
-                        weekButton.setBackground(getResources().getDrawable(R.drawable.line_selected));
-                        prevWeekButton = weekButton;
-                        focusedWeek = weekButton.getId();
-
-                        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                        Fragment programDataFragment = ProgramDataFragment.newInstance(programData, focusedWeek, isEditable);
-                        ft.replace(R.id.fragment_container_program_edit, programDataFragment).commit();
-                    }
-                });
-
-            }
-        });
-    }
-
-    private void onCreateAddWeekButton(ImageButton imageButton, LinearLayout.LayoutParams params) {
-        imageButton.setImageResource(R.drawable.ic_add_circle);
-        imageButton.setBackgroundColor(Color.TRANSPARENT);
-        params.gravity = Gravity.CENTER_VERTICAL;
-        imageButton.setLayoutParams(params);
-    }
-
     public void AddData() {
         SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.preference_file_key),MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -267,7 +170,6 @@ public class ProgramsCreateActivity extends AppCompatActivity implements InputPr
 
         boolean insertData = mDatabaseHelper.addData(newEntry);
 
-        View parentLayout = findViewById(android.R.id.content);
 // Now we must get the id in case the user saves the program again on first time launch
         if (insertData) {
             Snackbar.make(parentLayout, "Successfully saved program.", Snackbar.LENGTH_LONG).show();
@@ -298,6 +200,7 @@ public class ProgramsCreateActivity extends AppCompatActivity implements InputPr
             programData.setProgramTag("CUSTOM");
             programData.setProgramName(newName);
             AddData();
+
             if (isExitable) {
                 finish();
             }
@@ -322,5 +225,60 @@ public class ProgramsCreateActivity extends AppCompatActivity implements InputPr
         }
 
         dialog.dismiss();
+    }
+
+    @Override
+    public void onWeekSelectClick(final int position) {
+        if (focusedWeek != position) {
+            focusedWeek = position;
+
+            ReplaceWeekFragment();
+        }
+    }
+
+    @Override
+    public void onWeekAddClick(final int position) {
+        focusedWeek = position;
+
+        ReplaceWeekFragment();
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+
+        switch (item.getItemId()) {
+            case R.id.weekSelectHoldMenu_Edit:
+                return true;
+            case R.id.weekSelectHoldMenu_Remove:
+                int position = item.getOrder();
+                Snackbar.make(parentLayout, position + "", Snackbar.LENGTH_SHORT).show();
+                if (programData.getWeekSize() > 1) {
+                    programData.removeWeek(position);
+                    if (position == focusedWeek && focusedWeek == 0) {
+                        ReplaceWeekFragment();
+                    } else if (position == focusedWeek && focusedWeek == programData.getWeekSize() - 1) {
+                        focusedWeek--;
+                        ReplaceWeekFragment();
+                    }  else if (position == focusedWeek) {
+                        focusedWeek--;
+                        ReplaceWeekFragment();
+                    } else {
+                        ReplaceWeekFragment();
+                    }
+
+                  CreateRecyclerView();
+                }
+
+                return true;
+            default:
+                return super.onContextItemSelected(item);
+        }
+    }
+
+    public void ReplaceWeekFragment() {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        Fragment programDataFragment = ProgramDataFragment.newInstance(programData, focusedWeek, isEditable);
+        ft.replace(R.id.fragment_container_program_edit, programDataFragment).commit();
     }
 }

@@ -55,6 +55,9 @@ public class ProgramData implements Parcelable {
     public ProgramWeek getWeek(int indexWeek) {
         return weekList.get(indexWeek);
     }
+    public List<ProgramWeek> getWeekList() {
+        return weekList;
+    }
 
     public int getWeekSize() {
         return weekList.size();

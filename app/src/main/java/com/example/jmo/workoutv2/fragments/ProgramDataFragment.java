@@ -117,43 +117,59 @@ public class ProgramDataFragment extends Fragment implements AddExerciseDialogFr
             public boolean onMenuItemClick(MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
                     // Day Bar Expand Items
-                    case R.id.dayExpandMenu_removeAll:
-                        Snackbar.make(v, "Successfully removed day contents.", Snackbar.LENGTH_LONG).show();
-
-                        programData.getWeek(focusedWeek).getDay(groupPosition).getExerciseList().clear();
-                        prepareListData();
-
-                        listAdapter = new ProgramDataAdapter(getActivity(), listDataHeader, listDataChild, isEditable, dayTitleList, ProgramDataFragment.this);
-                        expandableListView.setAdapter(listAdapter);
-
-                        return true;
-
-                    case R.id.dayExpandMenu_setTitle:
-                        Snackbar.make(v, "Successfully set title.", Snackbar.LENGTH_LONG).show();
-                        programData.getWeek(focusedWeek).getDay(groupPosition).setTitle("Setted");
+                    case R.id.dayExpandMenu_removeAll: {
                         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                        builder.setTitle("Enter title")
-                                .setView(R.layout.popup_entertitle)
-                                .setNegativeButton(R.string.choice_no, new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                        dialogInterface.dismiss();
-                                    }
-                                })
+                        builder.setMessage("Remove All Exercises?")
                                 .setPositiveButton(R.string.choice_yes, new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
-                                        EditText editDayTitle = (EditText) ((AlertDialog) dialogInterface).findViewById(R.id.editDayTitle_popup);
-                                        String newDayTitle = editDayTitle.getText().toString();
+                                        Snackbar.make(v, "Successfully removed day contents.", Snackbar.LENGTH_LONG).show();
 
-                                        programData.getWeek(focusedWeek).getDay(groupPosition).setTitle(newDayTitle); // UPDATED PROGRAMDATA
-                                        dayTitleList.set(groupPosition, newDayTitle);
+                                        programData.getWeek(focusedWeek).getDay(groupPosition).getExerciseList().clear();
+                                        prepareListData();
+                                        listAdapter = new ProgramDataAdapter(getActivity(), listDataHeader, listDataChild, isEditable, dayTitleList, ProgramDataFragment.this);
+                                        expandableListView.setAdapter(listAdapter);
+                                    }
+                                })
+                                .setNegativeButton(R.string.choice_cancel, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+
                                     }
                                 });
                         builder.create().show();
-                        listAdapter.notifyDataSetChanged();
 
                         return true;
+                    }
+
+                        case R.id.dayExpandMenu_setTitle: {
+                            Snackbar.make(v, "Successfully set title.", Snackbar.LENGTH_LONG).show();
+                            programData.getWeek(focusedWeek).getDay(groupPosition).setTitle("Setted");
+                            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                            builder.setTitle("Enter title")
+                                    .setView(R.layout.popup_entertitle)
+                                    .setNegativeButton(R.string.choice_no, new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            dialogInterface.dismiss();
+                                        }
+                                    })
+                                    .setPositiveButton(R.string.choice_yes, new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            EditText editDayTitle = (EditText) ((AlertDialog) dialogInterface).findViewById(R.id.editDayTitle_popup);
+                                            String newDayTitle = editDayTitle.getText().toString();
+
+                                            programData.getWeek(focusedWeek).getDay(groupPosition).setTitle(newDayTitle); // UPDATED PROGRAMDATA
+                                            dayTitleList.set(groupPosition, newDayTitle);
+
+                                            listAdapter.notifyDataSetChanged();
+                                        }
+                                    });
+                            builder.create().show();
+
+                            return true;
+                        }
                     default:
                         return false;
                 }
