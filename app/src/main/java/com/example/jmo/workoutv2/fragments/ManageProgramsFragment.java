@@ -54,7 +54,6 @@ public class ManageProgramsFragment extends Fragment implements ManageProgramsLi
     @Override
     public void onResume() {
         super.onResume();
-        getActivity().setTitle(R.string.title_ProgramManager);
 
         programDataList = new ArrayList<>();
         adapter = new ManageProgramsListAdapter(getActivity(), programDataList, this);

@@ -10,10 +10,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
+import com.example.jmo.workoutv2.R;
 import com.example.jmo.workoutv2.fragments.MainFragment;
 import com.example.jmo.workoutv2.fragments.MyProgramsFragment;
-import com.example.jmo.workoutv2.fragments.PlaceholderFragment;
-import com.example.jmo.workoutv2.R;
+import com.example.jmo.workoutv2.fragments.MyProgramsFragmentOLD;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -60,13 +60,13 @@ public class MainActivity extends AppCompatActivity {
 
                 switch (item.getItemId()) {
                     case R.id.nav_MyPrograms:
-                        MyProgramsFragment myProgramsFragment = new MyProgramsFragment();
-                        transaction.replace(R.id.fragment_container, myProgramsFragment).addToBackStack(null);
+                        MyProgramsFragmentOLD myProgramsFragmentOLD = new MyProgramsFragmentOLD();
+                        transaction.replace(R.id.fragment_container, myProgramsFragmentOLD).addToBackStack(null);
                         transaction.commit();
                         isMainVisible = false;
                         break;
                     case R.id.nav_Placeholder:
-                        PlaceholderFragment placeholderFragment = new PlaceholderFragment();
+                        MyProgramsFragment placeholderFragment = new MyProgramsFragment();
                         transaction.replace(R.id.fragment_container, placeholderFragment).addToBackStack(null);
                         transaction.commit();
                         isMainVisible = false;

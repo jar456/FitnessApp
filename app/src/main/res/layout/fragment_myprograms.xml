@@ -5,112 +5,49 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/btn_myPrograms_manage"
-        android:layout_width="340dp"
-        android:layout_height="72dp"
-        android:layout_marginBottom="163dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="19dp"
-        android:background="@drawable/button_rnd_edge"
-        android:clickable="true"
-        android:gravity="left"
-        android:paddingLeft="12dp"
-        android:paddingTop="22dp"
-        android:text="@string/programs_Manage"
-        android:textSize="18dp"
-        android:theme="@style/ButtonText"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <fragment
+        android:id="@+id/fragment2"
+        android:name="com.example.jmo.workoutv2.fragments.ManageProgramsFragment"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rectangleTrans" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout="@layout/fragment_manageprograms" />
 
-    <Button
-        android:id="@+id/btn_myPrograms_create"
-        android:layout_width="340dp"
-        android:layout_height="72dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="28dp"
-        android:background="@drawable/button_rnd_edge"
-        android:clickable="true"
-        android:gravity="left"
-        android:paddingLeft="12dp"
-        android:paddingTop="22dp"
-        android:text="@string/programs_Create"
-        android:textSize="18dp"
-        android:theme="@style/ButtonText"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_myPrograms_manage"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <ImageView
-        android:id="@+id/rectangleTrans"
-        android:layout_width="100dp"
-        android:layout_height="32dp"
-        android:layout_marginEnd="276dp"
-        android:layout_marginRight="276dp"
-        app:layout_constraintBottom_toBottomOf="@+id/horizontalScrollView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/horizontalScrollView"
-        app:layout_constraintTop_toTopOf="@+id/horizontalScrollView"
-        app:layout_constraintVertical_bias="1.0"
-        app:srcCompat="@drawable/object_recent_transparent" />
-
-    <TextView
-        android:id="@+id/text_Recent"
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="Recent"
-        android:textColor="@color/colorWhiteTran"
-        app:layout_constraintBottom_toBottomOf="@+id/rectangleTrans"
-        app:layout_constraintEnd_toEndOf="@+id/rectangleTrans"
-        app:layout_constraintStart_toStartOf="@+id/rectangleTrans"
-        app:layout_constraintTop_toTopOf="@+id/rectangleTrans" />
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.50121653" />
 
-    <HorizontalScrollView
-        android:id="@+id/horizontalScrollView"
-        android:layout_width="360dp"
-        android:layout_height="246dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/border_recent"
-        app:layout_constraintBottom_toTopOf="@+id/btn_myPrograms_manage"
-        app:layout_constraintEnd_toEndOf="parent"
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.9" />
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="Button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="@+id/guideline2" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <fragment
-                android:id="@+id/fragment"
-                android:name="com.example.jmo.workoutv2.fragments.MyProgramsRecentFragment"
-                android:layout_width="360dp"
-                android:layout_height="match_parent"
-                tools:layout="@layout/programs_recent_null" />
-        </LinearLayout>
-    </HorizontalScrollView>
+    <Button
+        android:id="@+id/button4"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="Button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toTopOf="@+id/guideline2" />
 
 </android.support.constraint.ConstraintLayout>

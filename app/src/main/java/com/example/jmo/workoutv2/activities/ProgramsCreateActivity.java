@@ -1,5 +1,6 @@
 package com.example.jmo.workoutv2.activities;
 
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -7,6 +8,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -251,28 +253,45 @@ public class ProgramsCreateActivity extends AppCompatActivity implements InputPr
             case R.id.weekSelectHoldMenu_Edit:
                 return true;
             case R.id.weekSelectHoldMenu_Remove:
-                int position = item.getOrder();
-                Snackbar.make(parentLayout, position + "", Snackbar.LENGTH_SHORT).show();
-                if (programData.getWeekSize() > 1) {
-                    programData.removeWeek(position);
-                    if (position == focusedWeek && focusedWeek == 0) {
-                        ReplaceWeekFragment();
-                    } else if (position == focusedWeek && focusedWeek == programData.getWeekSize() - 1) {
-                        focusedWeek--;
-                        ReplaceWeekFragment();
-                    }  else if (position == focusedWeek) {
-                        focusedWeek--;
-                        ReplaceWeekFragment();
-                    } else {
-                        ReplaceWeekFragment();
-                    }
-
-                  CreateRecyclerView();
-                }
-
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setMessage(R.string.popupMessage_removeWeek)
+                        .setPositiveButton(getResources().getString(R.string.choice_yes), new RemoveExerciseOnClickListener(item.getOrder()))
+                        .setNegativeButton(getResources().getString(R.string.choice_no), null);
+                builder.create().show();
                 return true;
             default:
                 return super.onContextItemSelected(item);
+        }
+    }
+
+    public class RemoveExerciseOnClickListener implements DialogInterface.OnClickListener {
+        private int position;
+
+        private RemoveExerciseOnClickListener(int position) {
+            this.position = position;
+        }
+
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+
+            Snackbar.make(parentLayout, position + "", Snackbar.LENGTH_SHORT).show();
+            if (programData.getWeekSize() > 1) {
+                programData.removeWeek(position);
+                if (position == focusedWeek && focusedWeek == 0) {
+                    ReplaceWeekFragment();
+                } else if (position == focusedWeek && focusedWeek == programData.getWeekSize() - 1) {
+                    focusedWeek--;
+                    ReplaceWeekFragment();
+                }  else if (position == focusedWeek) {
+                    focusedWeek--;
+                    ReplaceWeekFragment();
+                } else if (position != focusedWeek && position == 0) {
+                    focusedWeek--;
+                } else {
+                    ReplaceWeekFragment();
+                }
+                CreateRecyclerView();
+            }
         }
     }
 
