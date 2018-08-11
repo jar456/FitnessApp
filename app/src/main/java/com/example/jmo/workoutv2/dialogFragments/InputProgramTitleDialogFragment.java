@@ -17,9 +17,22 @@ public class InputProgramTitleDialogFragment extends DialogFragment {
 
     InputProgramTitleDialogListener mListener;
 
-    public interface InputProgramTitleDialogListener {
-        public void onInputProgramTitleDialogPositiveClick(DialogFragment dialog, String newName);
+    private static final String ISEXITABLE_KEY = "isExitable_key";
+    private static final String ISSAVEABLE_KEY = "isSaveable_key";
 
+    public interface InputProgramTitleDialogListener {
+        public void onInputProgramTitleDialogPositiveClick(DialogFragment dialog, String newName, boolean isExitable, boolean isSaveable);
+
+    }
+
+    public static InputProgramTitleDialogFragment newInstance(boolean isExitable, boolean isSaveable) {
+
+        Bundle args = new Bundle();
+        args.putBoolean(ISEXITABLE_KEY, isExitable);
+        args.putBoolean(ISSAVEABLE_KEY, isSaveable);
+        InputProgramTitleDialogFragment fragment = new InputProgramTitleDialogFragment();
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
@@ -38,9 +51,10 @@ public class InputProgramTitleDialogFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         final View v = inflater.inflate(R.layout.popup_entertitle, null);
+        final boolean isExitable = getArguments().getBoolean(ISEXITABLE_KEY);
+        final boolean isSaveable = getArguments().getBoolean(ISSAVEABLE_KEY);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-
         builder.setMessage("Enter title")
                 .setView(v)
                 .setPositiveButton("Apply", new DialogInterface.OnClickListener() {
@@ -48,7 +62,7 @@ public class InputProgramTitleDialogFragment extends DialogFragment {
                     public void onClick(DialogInterface dialog, int which) {
                         EditText editTextTitle = v.findViewById(R.id.editDayTitle_popup);
                         String name = editTextTitle.getText().toString();
-                        mListener.onInputProgramTitleDialogPositiveClick(InputProgramTitleDialogFragment.this, name);
+                        mListener.onInputProgramTitleDialogPositiveClick(InputProgramTitleDialogFragment.this, name, isExitable, isSaveable);
 
                     }
                 })

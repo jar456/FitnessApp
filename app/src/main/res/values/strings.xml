@@ -13,10 +13,11 @@
     <string name="menu_Placeholder">Placeholder</string>
     <string name="menu_Home">Home</string>
 
-    <string name="programs_Create">Create a Program</string>
-    <string name="programs_Manage">Manage Your Programs</string>
-    <string name="programs_recentNull">No Recent Programs</string>
-    <string name="programs_recentCreate">Click to Create a Program</string>
+    <!-- My Programs Fragment -->
+    <string name="myPrograms_Create">Create a Program</string>
+    <string name="myPrograms_Manage">Manage Your Programs</string>
+    <string name="myPrograms_alertFound">No Programs Found</string>
+    <string name="myPrograms_alertCreate">You must Create a Program</string>
 
     <!-- Program Creator Selection -->
     <string name="menu_programSelector">Select a Program</string>
@@ -67,4 +68,50 @@
     <!-- Popup Messages -->
     <string name="popupMessage_exit">Would you like to exit?</string>
     <string name="popupMessage_removeWeek">Remove Week?</string>
+
+    <!-- Exercise View/Edit Screen -->
+    <string name="exerciseInfo_title">- Exercise Information -</string>
+    <string name="exerciseInfo_additional">- Additional Information -</string>
+    <string name="exerciseInfo_numReps">Number of Repetitions (REPS)</string>
+    <string name="exerciseInfo_numSets">Number of Sets</string>
+    <string name="exerciseInfo_weight">Amount of Weight</string>
+    <string-array name="weightType_array">
+        <item>lb</item>
+        <item>kg</item>
+        <item>RPE</item>
+        <item>% of Max</item>
+    </string-array>
+    <string name="exerciseInfoPopup_dialogTitle">Edit Exercise Title</string>
+    <string name="exerciseInfoPopup_title">Exercise Title</string>
+    <string name="exerciseInfoPopup_subtitle">Target Muscles</string>
+
+    <!-- Exercise WeightTypes -->
+    <string name="exerciseWeightType_lb">lb</string>
+    <string name="exerciseWeightType_kg">kg</string>
+    <string name="exerciseWeightType_RPE">RPE</string>
+    <string name="exerciseWeightType_max">% of Max</string>
+
+    <!-- Exercise Select -->
+    <string-array name="exerciseTypeItems">
+        <item>Any</item>
+        <item>Chest</item>
+        <item>Back</item>
+        <item>Shoulders</item>
+        <item>Legs</item>
+        <item>Biceps</item>
+        <item>Triceps</item>
+        <item>Forearms</item>
+        <item>Core</item>
+        <item>Cardio</item>
+    </string-array>
+
+    <string name="exerciseSelect_custom">Custom</string>
+    <string name="exerciseSelect_chest">Chest</string>
+    <string name="exerciseSelect_back">Back</string>
+    <string name="exerciseSelect_shoulders">Shoulders</string>
+    <string name="exerciseSelect_legs">Legs</string>
+    <string name="exerciseSelect_arms">Arms</string>
+    <string name="exerciseSelect_core">Core</string>
+    <string name="exerciseSelect_cardio">Cardio</string>
+    <string name="exerciseSelect_search">Search</string>
 </resources>

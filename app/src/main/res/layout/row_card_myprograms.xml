@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cardView_myPrograms"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp">
+
+        <RelativeLayout
+            android:id="@+id/parent_layout_cV_myPrograms"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="8dp">
+
+            <TextView
+                android:id="@+id/txt_cV_myPrograms_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:text="Program Title"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/txt_cV_myPrograms_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_alignStart="@+id/txt_cV_myPrograms_title"
+                android:layout_alignLeft="@+id/txt_cV_myPrograms_title"
+                android:layout_below="@+id/txt_cV_myPrograms_title"
+                android:text="Program Type" />
+
+            <TextView
+                android:id="@+id/txt_cV_myPrograms_week"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/txt_cV_myPrograms_title"
+                android:layout_alignLeft="@+id/txt_cV_myPrograms_title"
+                android:layout_below="@id/txt_cV_myPrograms_type"
+                android:text="0 Week Program" />
+
+            <ImageButton
+                android:id="@+id/btn_expandProgramItem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="@color/colorTransparent"
+                android:tint="@color/colorPrimary"
+                app:srcCompat="@drawable/ic_settings" />
+
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+</LinearLayout>

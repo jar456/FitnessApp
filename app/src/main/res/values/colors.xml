@@ -6,7 +6,8 @@
     <color name="colorAccent">#ff4081</color>
     <color name="colorWhite">#ffffff</color>
     <color name="colorBlack">#000000</color>
-    <color name="colorBlackTran">#21000000</color>
+    <color name="colorBlackTran">#15000000</color>
     <color name="colorWhiteTran">#C0ffffff</color>
     <color name="colorTransparent">#00ffffff</color>
+    <color name="colorExerciseIcon">#ff4081</color>
 </resources>

@@ -5,9 +5,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -19,7 +17,7 @@ import android.widget.PopupMenu;
 import com.example.jmo.workoutv2.R;
 import com.example.jmo.workoutv2.activities.ProgramsCreateActivity;
 import com.example.jmo.workoutv2.adapters.ManageProgramsListAdapter;
-import com.example.jmo.workoutv2.data.DatabaseProgramHelper;
+import com.example.jmo.workoutv2.databases.DatabaseProgramHelper;
 import com.example.jmo.workoutv2.data.ProgramData;
 import com.google.gson.Gson;
 
@@ -43,13 +41,9 @@ public class ManageProgramsFragment extends Fragment implements ManageProgramsLi
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL);
-        dividerItemDecoration.setDrawable(ContextCompat.getDrawable(getContext(), R.drawable.row_divider));
-        recyclerView.addItemDecoration(dividerItemDecoration);
 
         return v;
     }
-
 
     @Override
     public void onResume() {

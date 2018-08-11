@@ -21,7 +21,7 @@ import android.widget.AdapterView;
 
 import com.example.jmo.workoutv2.R;
 import com.example.jmo.workoutv2.adapters.WeekSelectAdapter;
-import com.example.jmo.workoutv2.data.DatabaseProgramHelper;
+import com.example.jmo.workoutv2.databases.DatabaseProgramHelper;
 import com.example.jmo.workoutv2.data.ProgramData;
 import com.example.jmo.workoutv2.dialogFragments.InputProgramTitleDialogFragment;
 import com.example.jmo.workoutv2.dialogFragments.PromptExitDialogFragment;
@@ -44,8 +44,9 @@ public class ProgramsCreateActivity extends AppCompatActivity implements InputPr
     private int selectedID; // Used for updating
 
     private final static boolean isEditable = true;
-    private boolean isExitable = false;
     private final static String SHARED_PREF_KEY = "num_programs"; // Used for unique program modifier
+    private final static String DEFAULT_TAG = "DEFAULT"; // Used for unique program modifier
+    private final static String CUSTOM_TAG = "CUSTOM"; // Used for unique program modifier
 
     private RecyclerView recyclerView;
     private WeekSelectAdapter adapter;
@@ -57,7 +58,7 @@ public class ProgramsCreateActivity extends AppCompatActivity implements InputPr
         setContentView(R.layout.activity_programs_edit);
 
         mDatabaseHelper = new DatabaseProgramHelper(this);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_programscreate);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_programEdit);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_save);
@@ -68,7 +69,7 @@ public class ProgramsCreateActivity extends AppCompatActivity implements InputPr
         parentLayout = findViewById(android.R.id.content);
 
         // If 1st time creation
-        if (programTag.equals("DEFAULT")) {
+        if (programTag.equals(DEFAULT_TAG)) {
             programData = new ProgramData("", programTag);
             PresetPrograms.CreateTemplateProgram(programData, programName, getApplicationContext()); // Note null program name
         }
@@ -82,7 +83,7 @@ public class ProgramsCreateActivity extends AppCompatActivity implements InputPr
         // Pass the data to fragment
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         Fragment programDataFragment = ProgramDataFragment.newInstance(programData, focusedWeek, isEditable);
-        ft.add(R.id.fragment_container_program_edit, programDataFragment).commit();
+        ft.add(R.id.fragment_container_programEdit_week, programDataFragment).commit();
 
     }
 
@@ -108,23 +109,30 @@ public class ProgramsCreateActivity extends AppCompatActivity implements InputPr
             // Respond to the action bar's Up/Home button
 
             case android.R.id.home: // Save Button
-                if (programData.getProgramTag().equals("DEFAULT")) {
+                if (programData.getProgramTag().equals(DEFAULT_TAG)) {
 
                     if (programData.getProgramName().equals("")) {
-                        InputProgramTitleDialogFragment dialog = new InputProgramTitleDialogFragment();
+                        // Pass isExitable and isSaveable
+                        final boolean isExitable = false;
+                        final boolean isSaveable = true;
+
+                        InputProgramTitleDialogFragment dialog = InputProgramTitleDialogFragment.newInstance(isExitable, isSaveable);
                         dialog.show(getSupportFragmentManager(), "InputProgramTitleDialogFragment");
                     } else {
                         AddData(); // This means the user already enter a program name
                     }
 
-                } else if (programData.getProgramTag().equals("CUSTOM")) {
+                } else if (programData.getProgramTag().equals(CUSTOM_TAG)) {
                     UpdateData();
-                    Snackbar.make(findViewById(R.id.CoordinatorLayout_program_create), "Successfully Saved", Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(findViewById(R.id.CoordinatorLayout_programEdit), "Successfully Saved", Snackbar.LENGTH_LONG).show();
                 }
                 return true;
 
             case R.id.programCreatorMenu_setTitle:
-                InputProgramTitleDialogFragment dialog = new InputProgramTitleDialogFragment();
+                final boolean isExitable = false;
+                final boolean isSaveable = false;
+
+                InputProgramTitleDialogFragment dialog = InputProgramTitleDialogFragment.newInstance(isExitable, isSaveable);
                 dialog.show(getSupportFragmentManager(), "InputProgramTitleDialogFragment");
                 return true;
 
@@ -196,12 +204,15 @@ public class ProgramsCreateActivity extends AppCompatActivity implements InputPr
         selectedProgram = newEntry; // Set old entry to new entry
     }
 
-    @Override
-    public void onInputProgramTitleDialogPositiveClick(DialogFragment dialog, String newName) { // For title popup
-        if (programTag.equals("DEFAULT") && programData.getProgramName().equals("")) { // Handle Condition if saved a new program
-            programData.setProgramTag("CUSTOM");
+    @Override // GET PAREMETERS isExitable and isSaveable
+    public void onInputProgramTitleDialogPositiveClick(DialogFragment dialog, String newName, boolean isExitable, boolean isSaveable) { // For title popup
+        if (programTag.equals(DEFAULT_TAG) && programData.getProgramName().equals("")) { // Handle Condition if saved a new program
             programData.setProgramName(newName);
-            AddData();
+
+            if (isSaveable) {
+                programData.setProgramTag(CUSTOM_TAG);
+                AddData();
+            }
 
             if (isExitable) {
                 finish();
@@ -216,11 +227,13 @@ public class ProgramsCreateActivity extends AppCompatActivity implements InputPr
 
     @Override
     public void onPromptExitDialogPositiveClick(DialogFragment dialog) {
-        if (programTag.equals("DEFAULT") && programData.getProgramName().equals("")) { // Handle Condition if saved a new program and if has no name
-            isExitable = true;
-            InputProgramTitleDialogFragment inputProgramTitleDialogFragment = new InputProgramTitleDialogFragment();
-            inputProgramTitleDialogFragment.show(getSupportFragmentManager(), "inputProgramTitleDialogFragment");
+        final boolean isExitable = true;
+        final boolean isSaveable = true;
 
+        if (programTag.equals(DEFAULT_TAG) && programData.getProgramName().equals("")) { // Handle Condition if saved a new program and if has no name
+            // pass isExitable + isSaveable
+            InputProgramTitleDialogFragment inputProgramTitleDialogFragment = InputProgramTitleDialogFragment.newInstance(isExitable, isSaveable);
+            inputProgramTitleDialogFragment.show(getSupportFragmentManager(), "inputProgramTitleDialogFragment");
         } else {
             UpdateData();
             finish();
@@ -298,6 +311,6 @@ public class ProgramsCreateActivity extends AppCompatActivity implements InputPr
     public void ReplaceWeekFragment() {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         Fragment programDataFragment = ProgramDataFragment.newInstance(programData, focusedWeek, isEditable);
-        ft.replace(R.id.fragment_container_program_edit, programDataFragment).commit();
+        ft.replace(R.id.fragment_container_programEdit_week, programDataFragment).commit();
     }
 }

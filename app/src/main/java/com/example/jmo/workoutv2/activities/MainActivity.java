@@ -11,9 +11,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.example.jmo.workoutv2.R;
+import com.example.jmo.workoutv2.fragments.ExerciseEditFragment;
 import com.example.jmo.workoutv2.fragments.MainFragment;
 import com.example.jmo.workoutv2.fragments.MyProgramsFragment;
-import com.example.jmo.workoutv2.fragments.MyProgramsFragmentOLD;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -60,13 +60,13 @@ public class MainActivity extends AppCompatActivity {
 
                 switch (item.getItemId()) {
                     case R.id.nav_MyPrograms:
-                        MyProgramsFragmentOLD myProgramsFragmentOLD = new MyProgramsFragmentOLD();
-                        transaction.replace(R.id.fragment_container, myProgramsFragmentOLD).addToBackStack(null);
+                        MyProgramsFragment myProgramsFragment = new MyProgramsFragment();
+                        transaction.replace(R.id.fragment_container, myProgramsFragment).addToBackStack(null);
                         transaction.commit();
                         isMainVisible = false;
                         break;
                     case R.id.nav_Placeholder:
-                        MyProgramsFragment placeholderFragment = new MyProgramsFragment();
+                        ExerciseEditFragment placeholderFragment = new ExerciseEditFragment();
                         transaction.replace(R.id.fragment_container, placeholderFragment).addToBackStack(null);
                         transaction.commit();
                         isMainVisible = false;

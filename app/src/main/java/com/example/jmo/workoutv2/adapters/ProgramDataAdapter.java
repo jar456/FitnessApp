@@ -82,6 +82,7 @@ public class ProgramDataAdapter extends BaseExpandableListAdapter{
         textViewExtra.setText(childSetsText + " by " + childRepsText);
 
         ImageButton removeExerciseButton = (ImageButton) convertView.findViewById(R.id.btn_removeExercise);
+        removeExerciseButton.setFocusable(false);
 
         if (isEditable) {
             removeExerciseButton.setOnClickListener(new View.OnClickListener() {
@@ -176,5 +177,7 @@ public class ProgramDataAdapter extends BaseExpandableListAdapter{
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return true;
     }
+
+
 
 }

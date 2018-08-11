@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -17,9 +18,11 @@ import android.widget.PopupMenu;
 import com.example.jmo.workoutv2.R;
 import com.example.jmo.workoutv2.adapters.ProgramDataAdapter;
 import com.example.jmo.workoutv2.data.ProgramData;
+import com.example.jmo.workoutv2.data.ProgramDay;
 import com.example.jmo.workoutv2.data.ProgramExercise;
 import com.example.jmo.workoutv2.data.ProgramWeek;
 import com.example.jmo.workoutv2.dialogFragments.AddExerciseDialogFragment;
+import com.example.jmo.workoutv2.dialogFragments.ExerciseSelectDialogFragment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -57,8 +60,6 @@ public class ProgramDataFragment extends Fragment implements AddExerciseDialogFr
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
-
         View v = inflater.inflate(R.layout.explist_program_data, container, false);
 
         programData = (ProgramData) getArguments().getParcelable(PROGRAMDATA_KEY);
@@ -74,10 +75,20 @@ public class ProgramDataFragment extends Fragment implements AddExerciseDialogFr
 
         expandableListView.setDividerHeight(0);
 
-
         expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView expandableListView, View view, int groupPosition, int childPosition, long id) {
+                ProgramDay day = programData.getWeek(focusedWeek).getDay(groupPosition);
+                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+
+                if (isEditable) {
+                    for (Fragment fragment : getActivity().getSupportFragmentManager().getFragments()) {
+                        ft.remove(fragment);
+                    }
+
+                    ExerciseEditFragment exerciseEditFragment = ExerciseEditFragment.newInstance(day, childPosition);
+                    ft.add(R.id.CoordinatorLayout_programEdit, exerciseEditFragment).addToBackStack(null).commit();
+                }
                 return false;
             }
         });
@@ -103,10 +114,11 @@ public class ProgramDataFragment extends Fragment implements AddExerciseDialogFr
     }
 
     public void showExercisePopup() {
-        AddExerciseDialogFragment dialog = new AddExerciseDialogFragment();
-        dialog.show(getFragmentManager(), "AddExerciseDialogFragment");
-        dialog.setTargetFragment(ProgramDataFragment.this, 1);
-
+        ExerciseSelectDialogFragment dialog = new ExerciseSelectDialogFragment();
+        dialog.show(getFragmentManager(), "ExerciseSelectDialogFragment");
+        // AddExerciseDialogFragment dialog = new AddExerciseDialogFragment();
+        // dialog.show(getFragmentManager(), "AddExerciseDialogFragment");
+        // dialog.setTargetFragment(ProgramDataFragment.this, 1);
     }
 
     @Override
@@ -181,7 +193,16 @@ public class ProgramDataFragment extends Fragment implements AddExerciseDialogFr
 
     @Override
     public void onAddExerciseClick(View v, int groupPosition) {
-        showExercisePopup();
+        ProgramDay day = programData.getWeek(focusedWeek).getDay(groupPosition);
+        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+
+        for (Fragment fragment : getActivity().getSupportFragmentManager().getFragments()) {
+            ft.remove(fragment);
+        }
+
+        ExerciseListFragment exerciseListFragment = new ExerciseListFragment();
+        ft.add(R.id.CoordinatorLayout_programEdit, exerciseListFragment).addToBackStack(null).commit();
+
         focusedDay = groupPosition;
     }
 
@@ -219,7 +240,7 @@ public class ProgramDataFragment extends Fragment implements AddExerciseDialogFr
 
         ProgramWeek getFocusedExercise = programData.getWeek(focusedWeek);
 
-        getFocusedExercise.getDay(focusedDay).getExerciseList().add(new ProgramExercise(exerciseName, numSets, numReps));
+        //getFocusedExercise.getDay(focusedDay).getExerciseList().add(new ProgramExercise(exerciseName, numSets, numReps));
 
         listDataChild.put(listDataHeader.get(focusedDay), getFocusedExercise.getDay(focusedDay).getExerciseList());
         listAdapter.notifyDataSetChanged();

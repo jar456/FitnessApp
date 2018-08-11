@@ -1,4 +1,4 @@
-package com.example.jmo.workoutv2.data;
+package com.example.jmo.workoutv2.databases;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -9,7 +9,7 @@ import android.util.Log;
 
 public class DatabaseProgramHelper extends SQLiteOpenHelper {
 
-    private static final String TAG = "DatabaseProgramHelper";
+    private static final String DATABASE_NAME = "ProgramHelper.db";
     private static final int DATABASE_VERSION = 1;
 
     private static final String TABLE_NAME = "program_table";
@@ -38,7 +38,7 @@ public class DatabaseProgramHelper extends SQLiteOpenHelper {
         ContentValues contentValues = new ContentValues();
         contentValues.put(COLUMN_NAME_SUBTITLE, item);
 
-        Log.d(TAG, "addData: Adding " + item + " to " + TABLE_NAME);
+        Log.d(DATABASE_NAME, "addData: Adding " + item + " to " + TABLE_NAME);
 
         long result = db.insert(TABLE_NAME, null, contentValues);
 
@@ -71,8 +71,8 @@ public class DatabaseProgramHelper extends SQLiteOpenHelper {
         String query = "UPDATE " + TABLE_NAME + " SET " + COLUMN_NAME_SUBTITLE +
                 " = '" + newSubtitle + "' WHERE " + COLUMN_NAME_TITLE + " = '" + id + "'" +
                 " AND " + COLUMN_NAME_SUBTITLE + " = '" + oldSubtitle + "'";
-        Log.d(TAG, "updateSubtitle: query: " + query);
-        Log.d(TAG, "updateSubtitle: Setting subtitle to " + newSubtitle);
+        Log.d(DATABASE_NAME, "updateSubtitle: query: " + query);
+        Log.d(DATABASE_NAME, "updateSubtitle: Setting subtitle to " + newSubtitle);
         db.execSQL(query);
     }
 
