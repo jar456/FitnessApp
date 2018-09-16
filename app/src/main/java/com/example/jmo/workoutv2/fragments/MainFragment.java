@@ -2,6 +2,7 @@ package com.example.jmo.workoutv2.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,5 +19,11 @@ public class MainFragment extends Fragment {
     public void onResume() {
         super.onResume();
         getActivity().setTitle(R.string.app_name);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu_nav);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
     }
 }

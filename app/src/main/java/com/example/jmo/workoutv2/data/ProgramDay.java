@@ -17,7 +17,7 @@ public class ProgramDay implements Parcelable {
 
     }
 
-    public void addExercise(String exerciseTarget, String exerciseName, int numSets, int numReps, int weight, String weightType, String additionalInfo) {
+    public void addExercise(String exerciseTarget, String exerciseName, int numSets, int numReps, double weight, String weightType, String additionalInfo) {
         ProgramExercise e = new ProgramExercise(exerciseTarget, exerciseName, numSets, numReps, weight, weightType, additionalInfo);
         exerciseList.add(e);
     }

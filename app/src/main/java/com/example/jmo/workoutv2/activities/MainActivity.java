@@ -1,5 +1,6 @@
 package com.example.jmo.workoutv2.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -11,13 +12,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.example.jmo.workoutv2.R;
-import com.example.jmo.workoutv2.fragments.ExerciseEditFragment;
 import com.example.jmo.workoutv2.fragments.MainFragment;
 import com.example.jmo.workoutv2.fragments.MyProgramsFragment;
 
 public class MainActivity extends AppCompatActivity {
 
-    private boolean isMainVisible;
     private NavigationView nav_view;
     private DrawerLayout drawer_layout;
 
@@ -32,7 +31,6 @@ public class MainActivity extends AppCompatActivity {
             }
             MainFragment mainFragment = new MainFragment();
             getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, mainFragment).commit();
-            isMainVisible=true;
         }
 
         android.support.v7.widget.Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_main);
@@ -63,19 +61,24 @@ public class MainActivity extends AppCompatActivity {
                         MyProgramsFragment myProgramsFragment = new MyProgramsFragment();
                         transaction.replace(R.id.fragment_container, myProgramsFragment).addToBackStack(null);
                         transaction.commit();
-                        isMainVisible = false;
                         break;
-                    case R.id.nav_Placeholder:
-                        ExerciseEditFragment placeholderFragment = new ExerciseEditFragment();
-                        transaction.replace(R.id.fragment_container, placeholderFragment).addToBackStack(null);
-                        transaction.commit();
-                        isMainVisible = false;
+                    case R.id.nav_ExerciseList:
+                        Intent intent = new Intent(MainActivity.this, ExerciseListActivity.class);
+                        startActivity(intent);
+
                         break;
                 }
 
                 return true;
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        clearMenu();
     }
 
     @Override
@@ -86,19 +89,11 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             // Respond to the action bar's Up/Home button
             case android.R.id.home:
-                if (isMainVisible) {
-                    drawer_layout.openDrawer(GravityCompat.START);
-                    return true;
-                }
-                else if (getSupportFragmentManager().getBackStackEntryCount() == 1 && isMainVisible == false) {
+                if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
                     getSupportFragmentManager().popBackStack();
-                    isMainVisible = true;
-                    getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu_nav);
-                    clearMenu(nav_view);
-                }
-                else if (getSupportFragmentManager().getBackStackEntryCount() > 1) {
-                    getSupportFragmentManager().popBackStack();;
-                    clearMenu(nav_view);
+                    clearMenu();
+                } else {
+                    drawer_layout.openDrawer(GravityCompat.START);
                 }
         }
         return super.onOptionsItemSelected(item);
@@ -106,19 +101,13 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
+        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
             getSupportFragmentManager().popBackStack();
-            getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu_nav);
-            clearMenu(nav_view);
-            isMainVisible=true;
-        }
-        else if (getSupportFragmentManager().getBackStackEntryCount() > 1) {
-            getSupportFragmentManager().popBackStack();
-            clearMenu(nav_view);
+            clearMenu();
         }
     }
 
-    private void clearMenu (NavigationView nav_view) {
+    private void clearMenu() {
         int size = nav_view.getMenu().size();
         for (int i = 0; i < size; i++) {
             nav_view.getMenu().getItem(i).setChecked(false);

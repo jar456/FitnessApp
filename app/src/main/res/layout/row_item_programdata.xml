@@ -9,8 +9,8 @@
 
     <ImageView
         android:id="@+id/img_dataExercise"
-        android:layout_width="55dp"
-        android:layout_height="55dp"
+        android:layout_width="54dp"
+        android:layout_height="54dp"
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
         android:layout_alignParentLeft="true"

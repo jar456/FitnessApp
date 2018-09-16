@@ -10,6 +10,7 @@ public class ProgramExercise implements Parcelable {
     private double weight;
 
     public ProgramExercise(int id, String exerciseTarget, String exerciseName, int numSets, int numReps, double weight, String weightType, String additionalInfo) {
+        this.id = id;
         this.exerciseTarget = exerciseTarget;
         this.exerciseName = exerciseName;
         this.numReps = numReps;
@@ -20,6 +21,16 @@ public class ProgramExercise implements Parcelable {
     }
 
     public ProgramExercise(String exerciseTarget, String exerciseName, int numSets, int numReps, double weight, String weightType, String additionalInfo) {
+        this.exerciseTarget = exerciseTarget;
+        this.exerciseName = exerciseName;
+        this.numReps = numReps;
+        this.numSets = numSets;
+        this.weight = weight;
+        this.weightType = weightType;
+        this.additionalInfo = additionalInfo;
+    }
+
+    public void setAll(String exerciseTarget, String exerciseName, int numSets, int numReps, double weight, String weightType, String additionalInfo) {
         this.exerciseTarget = exerciseTarget;
         this.exerciseName = exerciseName;
         this.numReps = numReps;

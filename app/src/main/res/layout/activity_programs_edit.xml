@@ -12,6 +12,7 @@
         android:layout_height="match_parent">
 
         <FrameLayout
+            android:id="@+id/fragment_container_programEdit"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="?android:attr/actionBarSize">
@@ -20,8 +21,8 @@
                 android:id="@+id/recyclerView_weekButton"
                 android:layout_width="match_parent"
                 android:layout_height="32dp"
-                android:orientation="horizontal"
-                android:background="@color/colorPrimary">
+                android:background="@color/colorPrimary"
+                android:orientation="horizontal">
 
             </android.support.v7.widget.RecyclerView>
 
@@ -29,8 +30,8 @@
                 android:id="@+id/fragment_container_programEdit_week"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="32dp">
-            </FrameLayout>
+                android:layout_marginTop="32dp"/>
+
         </FrameLayout>
 
         <android.support.v7.widget.Toolbar

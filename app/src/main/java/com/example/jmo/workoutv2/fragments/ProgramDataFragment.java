@@ -7,6 +7,8 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,7 +24,6 @@ import com.example.jmo.workoutv2.data.ProgramDay;
 import com.example.jmo.workoutv2.data.ProgramExercise;
 import com.example.jmo.workoutv2.data.ProgramWeek;
 import com.example.jmo.workoutv2.dialogFragments.AddExerciseDialogFragment;
-import com.example.jmo.workoutv2.dialogFragments.ExerciseSelectDialogFragment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,6 +47,8 @@ public class ProgramDataFragment extends Fragment implements AddExerciseDialogFr
     private int focusedWeek;
     private int focusedDay;
     private boolean isEditable;
+
+    private RecyclerView weekButtonsRecycler;
 
     public static ProgramDataFragment newInstance(ProgramData programData, int focusedWeek, boolean isEditable) {
         ProgramDataFragment fragment = new ProgramDataFragment();
@@ -86,7 +89,7 @@ public class ProgramDataFragment extends Fragment implements AddExerciseDialogFr
                         ft.remove(fragment);
                     }
 
-                    ExerciseEditFragment exerciseEditFragment = ExerciseEditFragment.newInstance(day, childPosition);
+                    ExerciseEditFragment exerciseEditFragment = ExerciseEditFragment.newInstance(day, childPosition, false);
                     ft.add(R.id.CoordinatorLayout_programEdit, exerciseEditFragment).addToBackStack(null).commit();
                 }
                 return false;
@@ -94,6 +97,28 @@ public class ProgramDataFragment extends Fragment implements AddExerciseDialogFr
         });
 
         return v;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        try {
+            //((AppCompatActivity) getActivity()).getSupportActionBar().hide();
+            //weekButtonsRecycler = getActivity().findViewById(R.id.recyclerView_weekButton);
+            //weekButtonsRecycler.setVisibility(View.INVISIBLE);
+        } catch (NullPointerException e) { }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        try {
+            ((AppCompatActivity) getActivity()).getSupportActionBar().show();
+            weekButtonsRecycler.setVisibility(View.VISIBLE);
+        } catch (NullPointerException e) {
+        }
+
     }
 
     private void prepareListData() {
@@ -111,14 +136,6 @@ public class ProgramDataFragment extends Fragment implements AddExerciseDialogFr
                 listDataChild.put(listDataHeader.get(i), getFocusedWeek.getDay(i).getExerciseList());
             }
         }
-    }
-
-    public void showExercisePopup() {
-        ExerciseSelectDialogFragment dialog = new ExerciseSelectDialogFragment();
-        dialog.show(getFragmentManager(), "ExerciseSelectDialogFragment");
-        // AddExerciseDialogFragment dialog = new AddExerciseDialogFragment();
-        // dialog.show(getFragmentManager(), "AddExerciseDialogFragment");
-        // dialog.setTargetFragment(ProgramDataFragment.this, 1);
     }
 
     @Override
@@ -200,7 +217,7 @@ public class ProgramDataFragment extends Fragment implements AddExerciseDialogFr
             ft.remove(fragment);
         }
 
-        ExerciseListFragment exerciseListFragment = new ExerciseListFragment();
+        ExerciseListFragment exerciseListFragment = ExerciseListFragment.newInstance(day);
         ft.add(R.id.CoordinatorLayout_programEdit, exerciseListFragment).addToBackStack(null).commit();
 
         focusedDay = groupPosition;

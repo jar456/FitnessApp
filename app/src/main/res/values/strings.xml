@@ -8,10 +8,9 @@
     <string name="title_ProgramCreator">Program Creator</string>
     <string name="title_ProgramManager">Program Manager</string>
 
-
+    <!-- Drawer Items -->
     <string name="menu_MyPrograms">My Programs</string>
-    <string name="menu_Placeholder">Placeholder</string>
-    <string name="menu_Home">Home</string>
+    <string name="menu_ExerciseList">Exercise List</string>
 
     <!-- My Programs Fragment -->
     <string name="myPrograms_Create">Create a Program</string>
@@ -92,20 +91,9 @@
     <string name="exerciseWeightType_max">% of Max</string>
 
     <!-- Exercise Select -->
-    <string-array name="exerciseTypeItems">
-        <item>Any</item>
-        <item>Chest</item>
-        <item>Back</item>
-        <item>Shoulders</item>
-        <item>Legs</item>
-        <item>Biceps</item>
-        <item>Triceps</item>
-        <item>Forearms</item>
-        <item>Core</item>
-        <item>Cardio</item>
-    </string-array>
 
     <string name="exerciseSelect_custom">Custom</string>
+    <string name="exerciseSelect_all">All</string>
     <string name="exerciseSelect_chest">Chest</string>
     <string name="exerciseSelect_back">Back</string>
     <string name="exerciseSelect_shoulders">Shoulders</string>
@@ -114,4 +102,6 @@
     <string name="exerciseSelect_core">Core</string>
     <string name="exerciseSelect_cardio">Cardio</string>
     <string name="exerciseSelect_search">Search</string>
+
+    <string name="exerciseSelect_searchHint">Search Exercise</string>
 </resources>

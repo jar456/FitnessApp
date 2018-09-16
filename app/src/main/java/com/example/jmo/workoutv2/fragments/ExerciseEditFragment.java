@@ -5,8 +5,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,8 +25,8 @@ public class ExerciseEditFragment extends Fragment implements ExerciseEditTitleD
     private static final String tag = "ExerciseEditFragment";
     private static final String PROGRAMDAY_KEY = "programDay_key";
     private static final String EXERCISEPOSITION_KEY = "exercisePosition_key";
-    private static final String weightLB = "lb";
-    private static final String weightKG = "kg";
+    private static final String ISADDABLE_KEY = "isAddable_key";
+    private static final String LOADEDEXERCISE_KEY = "loadedExercise_key";
 
     private TextView textView_title, textView_subtitle;
     private ImageButton imageButton_editTitle;
@@ -36,13 +35,28 @@ public class ExerciseEditFragment extends Fragment implements ExerciseEditTitleD
     private FloatingActionButton fab_Save;
 
     private ProgramDay day;
-    private ProgramExercise exercise;
+    private ProgramExercise exercise, loadedExercise;
     private int exercisePosition;
 
-    public static ExerciseEditFragment newInstance(ProgramDay day, int exercisePosition) {
+    private RecyclerView weekButtonsRecycler; // To disable
+    private boolean isAddableExercise;
+
+    public static ExerciseEditFragment newInstance(ProgramDay day, boolean isAddableExercise, ProgramExercise loadedExercise) {
+        Bundle args = new Bundle();
+        args.putParcelable(PROGRAMDAY_KEY, day);
+        args.putBoolean(ISADDABLE_KEY, isAddableExercise);
+        args.putParcelable(LOADEDEXERCISE_KEY, loadedExercise);
+
+        ExerciseEditFragment fragment = new ExerciseEditFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    public static ExerciseEditFragment newInstance(ProgramDay day, int exercisePosition, boolean isAddableExercise) {
         Bundle args = new Bundle();
         args.putParcelable(PROGRAMDAY_KEY, day);
         args.putInt(EXERCISEPOSITION_KEY, exercisePosition);
+        args.putBoolean(ISADDABLE_KEY, isAddableExercise);
 
         ExerciseEditFragment fragment = new ExerciseEditFragment();
         fragment.setArguments(args);
@@ -56,12 +70,18 @@ public class ExerciseEditFragment extends Fragment implements ExerciseEditTitleD
         try {
             day = getArguments().getParcelable(PROGRAMDAY_KEY);
             exercisePosition = getArguments().getInt(EXERCISEPOSITION_KEY);
-            ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
+            isAddableExercise = getArguments().getBoolean(ISADDABLE_KEY);
+            loadedExercise = getArguments().getParcelable(LOADEDEXERCISE_KEY);
         } catch (NullPointerException e) {
-            return v; // Add Error Dialog
+            // Add Error Dialog
         }
 
-        exercise = day.getExercise(exercisePosition);
+        if (isAddableExercise) {
+            exercise = loadedExercise;
+        } else {
+            exercise = day.getExercise(exercisePosition);
+        }
+
         PrepareViews(v, exercise);
 
         imageButton_editTitle.setOnClickListener(editTitleListener);
@@ -72,12 +92,12 @@ public class ExerciseEditFragment extends Fragment implements ExerciseEditTitleD
 
 
     private void PrepareViews(View v, ProgramExercise exercise) {
-        String title = exercise.getExerciseName();
-        String subtitle = exercise.getExerciseTarget();
+        String title = isStringEmpty(exercise.getExerciseName());
+        String subtitle = isStringEmpty(exercise.getExerciseTarget());
         String numReps = exercise.getNumReps() + "";
         String numSets = exercise.getNumSets() + "";
         String weight = exercise.getWeight() + "";
-        String additionalInfo = exercise.getAdditionalInfo();
+        String additionalInfo = isStringEmpty(exercise.getAdditionalInfo());
 
         textView_title = (TextView) v.findViewById(R.id.txt_exerciseInfo_title);
         textView_subtitle = (TextView) v.findViewById(R.id.txt_exerciseInfo_subtitle);
@@ -88,7 +108,6 @@ public class ExerciseEditFragment extends Fragment implements ExerciseEditTitleD
         spinner_weightType = (Spinner) v.findViewById(R.id.spinner_exerciseInfo_weightType);
         editText_additionalInfo = (EditText) v.findViewById(R.id.editText_exerciseInfo_additional);
         fab_Save = (FloatingActionButton) v.findViewById(R.id.fab_exerciseInfo);
-
 
         textView_title.setText(title);
         textView_subtitle.setText(subtitle);
@@ -101,7 +120,7 @@ public class ExerciseEditFragment extends Fragment implements ExerciseEditTitleD
         spinner_weightType.setAdapter(adapter);
 
         Resources res = getResources(); // For the sake of readability
-        String weightType = exercise.getWeightType();
+        String weightType = isStringEmpty(exercise.getWeightType());
 
         if (weightType.equals(res.getString(R.string.exerciseWeightType_lb))) {
             spinner_weightType.setSelection(0);
@@ -133,13 +152,18 @@ public class ExerciseEditFragment extends Fragment implements ExerciseEditTitleD
             String exerciseTitle = textView_title.getText().toString();
             int numSets = Integer.parseInt(editText_numSets.getText().toString());
             int numReps = Integer.parseInt(editText_numReps.getText().toString());
-            double weight = Integer.parseInt(editText_weight.getText().toString());
+            double weight = Double.parseDouble(editText_weight.getText().toString());
             String weightType = spinner_weightType.getSelectedItem().toString();
             String additionalInfo = editText_additionalInfo.getText().toString();
 
-            exercise.setAll(exerciseTarget, exerciseTitle, numSets, numReps, weight, weightType, additionalInfo);
-
-            getActivity().getSupportFragmentManager().popBackStack();
+            if (isAddableExercise) {
+                day.addExercise(exerciseTarget, exerciseTitle, numSets, numReps, weight, weightType, additionalInfo);
+                getActivity().getSupportFragmentManager().popBackStack();
+                getActivity().getSupportFragmentManager().popBackStack();
+            } else {
+                exercise.setAll(exerciseTarget, exerciseTitle, numSets, numReps, weight, weightType, additionalInfo);
+                getActivity().getSupportFragmentManager().popBackStack();
+            }
         }
     };
 
@@ -150,14 +174,12 @@ public class ExerciseEditFragment extends Fragment implements ExerciseEditTitleD
         dialog.dismiss();
     }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-
-        try {
-            ((AppCompatActivity) getActivity()).getSupportActionBar().show();
-        } catch (NullPointerException e) {
-            Log.d(tag, " No Action Bar");
+    private String isStringEmpty(String string) {
+        if (string == null) {
+            string = "";
+        } else {
+            // Do Nothing
         }
+        return string;
     }
 }

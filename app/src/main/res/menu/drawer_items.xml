@@ -5,7 +5,7 @@
             android:id="@+id/nav_MyPrograms"
             android:title="@string/menu_MyPrograms" />
         <item
-            android:id="@+id/nav_Placeholder"
-            android:title="@string/menu_Placeholder" />
+            android:id="@+id/nav_ExerciseList"
+            android:title="@string/menu_ExerciseList" />
     </group>
 </menu>
